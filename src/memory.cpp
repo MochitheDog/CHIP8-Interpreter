@@ -4,6 +4,7 @@
 Memory::Memory()
 {
 	Initialize();
+	InitFont();
 }
 
 Memory::~Memory()
@@ -38,12 +39,49 @@ void Memory::Initialize()
 	PC = PROGRAM_START_ADDRESS;
 }
 
+void Memory::InitFont()
+{
+	std::vector<uint8_t> font = {
+		0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
+		0x20, 0x60, 0x20, 0x20, 0x70, // 1
+		0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
+		0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3
+		0x90, 0x90, 0xF0, 0x10, 0x10, // 4
+		0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5
+		0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6
+		0xF0, 0x10, 0x20, 0x40, 0x40, // 7
+		0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8
+		0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9
+		0xF0, 0x90, 0xF0, 0x90, 0x90, // A
+		0xE0, 0x90, 0xE0, 0x90, 0xE0, // B
+		0xF0, 0x80, 0x80, 0x80, 0xF0, // C
+		0xE0, 0x90, 0x90, 0x90, 0xE0, // D
+		0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
+		0xF0, 0x80, 0xF0, 0x80, 0x80  // F
+	};
+	for (int i = 0; i < font.size(); i++)
+	{
+		unsigned int addr = FONT_START_ADDRESS;
+		stack[addr + i] = font[i];
+	}
+	//DebugPrintFont();
+}
+
+// print 4 bytes from stack at SP address for testing
 void Memory::DebugPrintSP()
 {
-	// print 4 bytes from stack
 	for (int i = 0; i < 4; i++)
 	{
 		std::cout << +stack[PC + i] << " "; // The + promotes the uint8_t to int so it can be printed properly
 	}
 	std::cout << std::endl;
+}
+
+// print first and last byte of font for testing
+void Memory::DebugPrintFont()
+{
+	unsigned int startaddr = FONT_START_ADDRESS;
+	unsigned int endaddr = FONT_END_ADDRESS;
+	std::cout << +stack[startaddr] << " "; // The + promotes the uint8_t to int so it can be printed properly
+	std::cout << +stack[endaddr] << " " << std::endl;
 }

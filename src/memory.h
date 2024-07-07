@@ -3,6 +3,8 @@
 
 #define PROGRAM_START_ADDRESS 0x200;
 #define ETI660_PROGRAM_START_ADDRESS 0x600;
+#define FONT_START_ADDRESS 0x050;
+#define FONT_END_ADDRESS 0x09F;
 
 class Memory
 {
@@ -11,7 +13,9 @@ public:
 	Memory();
 	~Memory();
 	void Initialize();
+	void InitFont();
 	void DebugPrintSP();
+	void DebugPrintFont();
 
 	std::vector<uint8_t> stack; // array of bytes
 	uint8_t SP; // stack pointer
