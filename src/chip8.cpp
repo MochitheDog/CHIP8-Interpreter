@@ -34,6 +34,7 @@ bool Chip8::LoadROMFromFile(const std::string path)
 		file.read(&memory->stack[memory->PC], sizeOfRom); // read all characters
 	}
 	memory->DebugPrintSP();
+	Fetch();
 	// file.close(); // Don't need to close explicitly because of RAII
 	return true;
 }
@@ -42,4 +43,25 @@ std::string Chip8::GetFilePathFromDialog()
 {
 	// Fug this do this later with vxWidgets or something less annoying to setup
 	return "";
+}
+
+// Read the instruction that the program counter is pointing at
+// and increment the PC
+uint16_t Chip8::Fetch()
+{
+	uint16_t instr = 0x00;
+	// Combine two bytes into one 16bit instruction
+	instr = (memory->stack[memory->PC] << 8 | memory->stack[memory->PC + 1]);
+	memory->PC = memory->PC + 2;
+	return instr;
+}
+
+void Chip8::Decode()
+{
+
+}
+
+void Chip8::Execute()
+{
+
 }

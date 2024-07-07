@@ -15,4 +15,7 @@ public:
 private:
 	std::unique_ptr<Memory> memory;
 	int mainLoop();
+	uint16_t Fetch();
+	void Decode();
+	void Execute();
 };
