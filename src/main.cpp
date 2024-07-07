@@ -1,17 +1,17 @@
 /**
-* CHIP-8 Interpreter entry file
+* CHIP-8 Chip8 entry file
 * Using SFML for graphics and audio
 * 
 * Aaron Cheung - 2024
 */
 
 #include <memory>
-#include "ROM.h"
 #include <SFML/Graphics.hpp>
-
+#include "chip8.h"
 
 int main()
 {
+    // Window setup stuff
     int windowWidth = 64;
     int windowHeight = 32;
     int scaleFactor = 5;
@@ -21,8 +21,8 @@ int main()
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
 
-    bool romLoadSuccess = false;
-
+    Chip8 chip8;
+    bool romLoadSuccess = chip8.LoadROMFromFile("E:/Dev/CHIP8 ROM/IBM Logo.ch8");
     while (window.isOpen())
     {
         sf::Event event;
@@ -36,11 +36,6 @@ int main()
         window.draw(shape);
         window.display();
         
-        if (!romLoadSuccess)
-        {
-            std::unique_ptr<ROM> rom = std::unique_ptr<ROM>(new ROM());
-            romLoadSuccess = rom->LoadROMFromFile("E:/Dev/CHIP8 ROM/IBM Logo.ch8");
-        }
     }
 
     return 0;
