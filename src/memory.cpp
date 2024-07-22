@@ -1,5 +1,6 @@
 #include <iostream>
 #include "memory.h"
+#include "chip8.h"
 
 Memory::Memory()
 {
@@ -72,7 +73,7 @@ void Memory::DebugPrintSP()
 {
 	for (int i = 0; i < 4; i++)
 	{
-		std::cout << +stack[PC + i] << " "; // The + promotes the uint8_t to int so it can be printed properly
+		std::cout << Chip8::HexPrint(stack[PC + i]) << " ";
 	}
 	std::cout << std::endl;
 }
@@ -82,6 +83,6 @@ void Memory::DebugPrintFont()
 {
 	unsigned int startaddr = FONT_START_ADDRESS;
 	unsigned int endaddr = FONT_END_ADDRESS;
-	std::cout << +stack[startaddr] << " "; // The + promotes the uint8_t to int so it can be printed properly
-	std::cout << +stack[endaddr] << " " << std::endl;
+	std::cout << Chip8::HexPrint(stack[startaddr]) << " ";
+	std::cout << Chip8::HexPrint(stack[endaddr]) << " " << std::endl;
 }

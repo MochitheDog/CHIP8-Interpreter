@@ -11,11 +11,13 @@ public:
 	void StartMainLoop();
 	bool LoadROMFromFile(const std::string path);
 	std::string GetFilePathFromDialog();
+	static std::string HexPrint(uint8_t byte); // debugging
 
 private:
 	std::unique_ptr<Memory> memory;
 	int mainLoop();
 	uint16_t Fetch();
-	void Decode();
+	void Decode(uint16_t instr);
 	void Execute();
+	static std::string NibToString(uint8_t nib); // debugging
 };
