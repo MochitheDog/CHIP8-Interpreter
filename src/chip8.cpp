@@ -99,6 +99,10 @@ void Chip8::Decode(uint16_t instr)
 		{
 			CLS();
 		}
+		else if (bytes[1] == 0xEE)
+		{
+			RET();
+		}
 		break;
 	}
 	case (0x1):
@@ -222,8 +226,19 @@ std::string Chip8::NibToString(uint8_t nib)
 	}
 }
 
+// Clear display
 void Chip8::CLS()
 {
 	std::cout << "Clear window" << std::endl;
 	window->clear();
 }
+
+// Return from a subroutine.
+// The interpreter sets the program counter to the address at the top of the stack,
+// then subtracts 1 from the stack pointer.
+void Chip8::RET()
+{
+	memory->PC = memory->stack[memory->SP];
+	memory->SP--;
+}
+

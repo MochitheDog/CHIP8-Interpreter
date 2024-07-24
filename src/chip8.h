@@ -28,4 +28,6 @@ private:
 	static std::string NibToString(uint8_t nib); // debugging
 
 	void CLS();
+	void RET();
+
 };

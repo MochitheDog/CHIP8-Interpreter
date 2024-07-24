@@ -18,7 +18,7 @@ public:
 	void DebugPrintFont();
 
 	std::vector<uint8_t> stack; // array of bytes
-	uint8_t SP; // stack pointer
+	uint8_t SP; // stack pointer points to the top of the stack
 	// Registers
 	uint8_t V0,
 		V1,
