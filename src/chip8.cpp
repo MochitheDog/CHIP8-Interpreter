@@ -6,6 +6,12 @@
 Chip8::Chip8()
 {
 	memory = std::unique_ptr<Memory>(new Memory);
+	window = std::unique_ptr<sf::RenderWindow>(new sf::RenderWindow(sf::VideoMode(windowWidth, windowHeight), "SFML works!", sf::Style::Titlebar | sf::Style::Close));
+	window->setSize(sf::Vector2u(windowWidth * scaleFactor, windowHeight * scaleFactor));
+	sf::CircleShape shape(100.f);
+	shape.setFillColor(sf::Color::Green);
+	window->clear();
+	window->draw(shape);
 }
 
 Chip8::~Chip8()
@@ -20,6 +26,18 @@ void Chip8::StartMainLoop()
 
 int Chip8::mainLoop()
 {
+
+	while (window->isOpen())
+	{
+		sf::Event event;
+		while (window->pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				window->close();
+		}
+		
+		window->display();
+	}
 	return 0;
 }
 
@@ -68,14 +86,19 @@ void Chip8::Decode(uint16_t instr)
 	
 	bytes[0] = instr >> 8;
 	bytes[1] = instr >> 0;
-
+	std::cout << "Decoding " << HexPrint(bytes[0]) << HexPrint(bytes[1]) << std::endl;
 	//CHIP-8 instructions are divided into broad categories by the first “nibble”, or “half-byte”
+	// <-- upper bits, --> lower bits
 	uint8_t nib1 = (bytes[0] & 0xF0) >> 4;
 	switch (nib1)
 	{
 	case (0x0):
 	{
-
+		// 00E0 - CLS - Clear display
+		if (bytes[1] == 0xE0)
+		{
+			CLS();
+		}
 		break;
 	}
 	case (0x1):
@@ -197,4 +220,10 @@ std::string Chip8::NibToString(uint8_t nib)
 	default:
 		return std::to_string(nib);
 	}
+}
+
+void Chip8::CLS()
+{
+	std::cout << "Clear window" << std::endl;
+	window->clear();
 }
