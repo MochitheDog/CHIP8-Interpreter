@@ -107,6 +107,8 @@ void Chip8::Decode(uint16_t instr)
 	}
 	case (0x1):
 	{
+		// 1nnn - JP - Set PC to nnn
+		JP(bytes[0] << 8 | bytes[1]);
 		break;
 	}
 	case (0x2):
@@ -242,3 +244,10 @@ void Chip8::RET()
 	memory->SP--;
 }
 
+// Jump
+// Set the program counter to XNNN
+void Chip8::JP(uint16_t location)
+{
+
+	memory->PC = location;
+}
