@@ -29,5 +29,6 @@ private:
 
 	void CLS();
 	void RET();
-	void JP(uint16_t location);
+	void JP(uint16_t addr);
+	void CALL(uint16_t addr);
 };

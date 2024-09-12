@@ -56,7 +56,15 @@ bool Chip8::LoadROMFromFile(const std::string path)
 	auto ins = Fetch();
 	Decode(ins);
 	ins = Fetch();
-	Decode(ins);
+
+
+	/*Decode(ins);
+	while (memory->PC < memory->stack.size())
+	{
+		auto ins = Fetch();
+		Decode(ins);
+	}*/
+
 	// file.close(); // Don't need to close explicitly because of RAII
 	return true;
 }
@@ -113,6 +121,7 @@ void Chip8::Decode(uint16_t instr)
 	}
 	case (0x2):
 	{
+		CALL(bytes[0] << 8 | bytes[1]);
 		break;
 	}
 	case (0x3):
@@ -245,9 +254,17 @@ void Chip8::RET()
 }
 
 // Jump
-// Set the program counter to XNNN
-void Chip8::JP(uint16_t location)
+// Set the program counter to Xnnn
+void Chip8::JP(uint16_t addr)
 {
+	memory->PC = addr;
+}
 
-	memory->PC = location;
+// CALL subroutine at Xnnn
+// Increment the stack pointer then put current PC on top of the stack. Then set PC to nnn
+void Chip8::CALL(uint16_t addr)
+{
+	memory->SP++;
+	memory->stack[memory->SP] = memory->PC;
+	memory->PC = addr;
 }

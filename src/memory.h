@@ -38,7 +38,7 @@ public:
 		VF = 0x0;
 	// Address register
 	uint16_t I = 0x00; // Index register
-	uint8_t PC = PROGRAM_START_ADDRESS; // Program counter
+	uint16_t PC = PROGRAM_START_ADDRESS; // Program counter
 
 	//Timer delayTimer;
 };
