@@ -83,7 +83,7 @@ uint16_t Chip8::Fetch()
 	// Combine two bytes into one 16bit instruction
 	instr = (memory->stack[memory->PC] << 8 | memory->stack[memory->PC + 1]<<0);
 	//std::cout << std::to_string(memory->stack[memory->PC]) << " " << std::to_string(memory->stack[memory->PC + 1]);
-	memory->PC = memory->PC + 2;
+	memory->PC += 2;
 	return instr;
 }
 
@@ -126,10 +126,12 @@ void Chip8::Decode(uint16_t instr)
 	}
 	case (0x3):
 	{
+		SE(bytes[0] << 8, bytes[1]);
 		break;
 	}
 	case (0x4):
 	{
+		SNE(bytes[0] << 8, bytes[1]);
 		break;
 	}
 	case (0x5):
@@ -267,4 +269,22 @@ void Chip8::CALL(uint16_t addr)
 	memory->SP++;
 	memory->stack[memory->SP] = memory->PC;
 	memory->PC = addr;
+}
+
+// Skip next instruction if Vx == kk from instr: 3xkk.
+void Chip8::SE(uint8_t x, uint8_t byte)
+{
+	if (memory->V[x] == byte)
+	{
+		memory->PC += 2;
+	}
+}
+
+// Skip the next instruction if Vx != kk from instr: 4xkk
+void Chip8::SNE(uint8_t x, uint8_t byte)
+{
+	if (memory->V[x] != byte)
+	{
+		memory->PC += 2;
+	}
 }

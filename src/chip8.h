@@ -31,4 +31,6 @@ private:
 	void RET();
 	void JP(uint16_t addr);
 	void CALL(uint16_t addr);
+	void SE(uint8_t x, uint8_t byte);
+	void SNE(uint8_t x, uint8_t byte);
 };

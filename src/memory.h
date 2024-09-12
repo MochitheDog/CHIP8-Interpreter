@@ -36,6 +36,7 @@ public:
 		VD,
 		VE,
 		VF = 0x0;
+	std::vector<uint8_t> V;
 	// Address register
 	uint16_t I = 0x00; // Index register
 	uint16_t PC = PROGRAM_START_ADDRESS; // Program counter
