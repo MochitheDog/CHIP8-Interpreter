@@ -136,22 +136,45 @@ void Chip8::Decode(uint16_t instr)
 	}
 	case (0x5):
 	{
+		if (bytes[1] << 8 == 0)
+		{
+			SE_xy(bytes[0] << 8, bytes[1]);
+		}
 		break;
 	}
 	case (0x6):
 	{
+		LD(bytes[0] << 8, bytes[1]);
 		break;
 	}
 	case (0x7):
 	{
+		ADD(bytes[0] << 8, bytes[1]);
 		break;
 	}
 	case (0x8):
 	{
+		if (bytes[1] << 8 == 0)
+		{
+			LD_xy(bytes[0] << 8, bytes[1]);
+		}
+		else if (bytes[1] << 8 == 1)
+		{
+			OR(bytes[0] << 8, bytes[1]);
+		}
+		else if (bytes[1] << 8 == 2)
+		{
+			AND(bytes[0] << 8, bytes[1]);
+		}
+		else if (bytes[1] << 8 == 3)
+		{
+			XOR(bytes[0] << 8, bytes[1]);
+		}
 		break;
 	}
 	case (0x9):
 	{
+
 		break;
 	}
 	case (0xA):
@@ -287,4 +310,49 @@ void Chip8::SNE(uint8_t x, uint8_t byte)
 	{
 		memory->PC += 2;
 	}
+}
+
+// Skip next instruction if Vx = Vy: 5xy0
+void Chip8::SE_xy(uint8_t x, uint8_t y)
+{
+	if (memory->V[x] == memory->V[y])
+	{
+		memory->PC += 2;
+	}
+}
+
+// Set Vx = kk: 6xkk
+void Chip8::LD(uint8_t x, uint8_t byte)
+{
+	memory->V[x] = byte;
+}
+
+// Adds the value kk to the value of register Vx, then stores the result in Vx: 7xkk
+void Chip8::ADD(uint8_t x, uint8_t byte)
+{
+	memory->V[x] += byte;
+}
+
+// Set Vx = Vy: 8xy0
+void Chip8::LD_xy(uint8_t x, uint8_t y)
+{
+	memory->V[x] = memory->V[y];
+}
+
+// Set Vx = Vx OR Vy: 8xy1
+void Chip8::OR(uint8_t x, uint8_t y)
+{
+	memory->V[x] = memory->V[x] | memory->V[y];
+}
+
+// Set Vx = Vx AND Vy: 8xy2
+void Chip8::AND(uint8_t x, uint8_t y)
+{
+	memory->V[x] = memory->V[x] & memory->V[y];
+}
+
+// Set Vx = Vx XOR Vy: 8xy3
+void Chip8::XOR(uint8_t x, uint8_t y)
+{
+	memory->V[x] = memory->V[x] ^ memory->V[y];
 }

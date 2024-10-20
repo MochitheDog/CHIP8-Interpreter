@@ -33,4 +33,11 @@ private:
 	void CALL(uint16_t addr);
 	void SE(uint8_t x, uint8_t byte);
 	void SNE(uint8_t x, uint8_t byte);
+	void SE_xy(uint8_t x, uint8_t y);
+	void LD(uint8_t x, uint8_t byte);
+	void ADD(uint8_t x, uint8_t byte);
+	void LD_xy(uint8_t x, uint8_t y);
+	void OR(uint8_t x, uint8_t y);
+	void AND(uint8_t x, uint8_t y);
+	void XOR(uint8_t x, uint8_t y);
 };
